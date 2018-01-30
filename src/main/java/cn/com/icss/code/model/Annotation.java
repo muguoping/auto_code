@@ -3,7 +3,6 @@ package cn.com.icss.code.model;
 /**
  * 
  * velocity生成注释信息类
- * @author zhengz
  *
  */
 public class Annotation {

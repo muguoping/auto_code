@@ -7,7 +7,6 @@ import java.util.Map;
 /**
  * 
  * velocity实体公共类
- * @author zhengz
  *
  */
 public class Bean {
