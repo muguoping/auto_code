@@ -1,0 +1,121 @@
+##创建controller类
+package $!{bean.beanUrl};
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+
+import $!{bean.impBeanUrl};
+import $!{bean.impBeanServcieUrl};
+
+import com.cms.common.util.StringUtil;
+import com.cms.common.util.ServiceResponse;
+import com.cms.common.util.ServiceResponseHandle;
+import com.cms.common.util.page.Page;
+import com.cms.business.model.basic.ValidateGroup1;
+import com.cms.business.model.basic.ValidateGroup2;
+
+
+/**
+ * 描述：$!{bean.proxClassZhName}模块controller类，负责页面分发与跳转
+ * 
+ * @author $!{annotation.authorName}
+ * @version $!{annotation.version} $!{annotation.date}
+ */
+
+@RestController
+@RequestMapping("$!{bean.lowerName}")
+public class $!{bean.uperName}Controller{
+    @Resource
+	private $!{bean.uperName}Service $!{bean.lowerName}Service;
+	 
+	/**
+	 * 进入列表页面
+	 * @return ModelAndView
+	 */
+	@RequestMapping("/index")
+	public ModelAndView index(){
+		return new ModelAndView("$!{bean.modelName}/$!{bean.lowerName}List");
+	}
+	
+	/**
+	 * 根据条件查找列表方法
+	 * @param $!{bean.lowerName} $!{bean.uperName}：实体对象（查询条件）
+	 * @param request HttpServletRequest
+	 * @param response HttpServletResponse
+	 * @param page Page:分页对象
+	 * @return: $!{bean.lowerName}列表ServiceResponse包装类
+	 */
+	@RequestMapping(value = "/list", method = { RequestMethod.POST, RequestMethod.GET })
+	public ServiceResponse<Page> listByCondition($!{bean.uperName} $!{bean.lowerName}, Page page){
+		return ServiceResponseHandle.success($!{bean.lowerName}Service.pageByCondition($!{bean.lowerName},page));
+	}
+		
+	/**
+	 * 新增方法
+	 * @param response HttpServletResponse
+	 * @param $!{bean.lowerName} $!{bean.uperName}:实体类
+	 * @return: ajax输入json字符串
+	 */
+	@RequestMapping(value = "/add", method = { RequestMethod.POST })
+	public ServiceResponse add(@Validated({ValidateGroup1.class}) $!{bean.uperName} $!{bean.lowerName}, BindingResult results){
+	    return $!{bean.lowerName}Service.add($!{bean.lowerName});
+	}
+	
+	/**
+	 * 删除方法
+	 * @param response HttpServletResponse
+	 * @param key String:多个由“，”分割开的id字符串
+	 * @return: ajax输入json字符串
+	 */
+	@RequestMapping(value = "/delete", method = { RequestMethod.POST })
+	public ServiceResponse delete(String key){
+	    if (StringUtil.isEmptyOrNull(key)){
+    		return ServiceResponseHandle.failed("PARAM_INVALIDATE");
+    	}
+    	
+		return $!{bean.lowerName}Service.deleteByKey(key);
+	}
+
+	/**
+	 * 修改方法
+	 * @param $!{bean.lowerName} $!{bean.uperName}：实体对象
+	 * @return: ajax输入json字符串
+	 */
+	@RequestMapping(value = "/update", method = { RequestMethod.POST })
+	public ServiceResponse update(@Validated({ValidateGroup2.class}) $!{bean.uperName} $!{bean.lowerName}, BindingResult results){
+		return $!{bean.lowerName}Service.update($!{bean.lowerName});
+	}
+	
+	/**
+	 * @Title: addView  
+	 * @Description: TODO(点击新增跳转页面)  
+	 * @return ModelAndView 
+	 * @throws
+	 */	
+	@RequestMapping("/viewAdd")
+	public ModelAndView viewAdd(){
+		return new ModelAndView("$!{bean.modelName}/$!{bean.lowerName}Add");
+	}
+	
+	/**
+	 * @Title: editView  
+	 * @Description: TODO(修改方法跳转页面)  
+	 * @param key
+	 * @return ModelAndView 
+	 * @throws
+	 */
+	@RequestMapping("/viewUpdate")
+	public ModelAndView viewUpdate(String id){
+		$!{bean.uperName} e = $!{bean.lowerName}Service.getByPrimaryKey(id);
+		return new ModelAndView("$!{bean.modelName}/$!{bean.lowerName}Edit").addObject("$!{bean.lowerName}", e);
+	}
+}

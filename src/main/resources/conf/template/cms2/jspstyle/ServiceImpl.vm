@@ -1,0 +1,90 @@
+##创建service实现类
+package $!{bean.beanUrl};
+import javax.annotation.Resource;
+import java.util.List;
+import $!{bean.ImpDaoUrl};
+import $!{bean.impBeanUrl};
+import $!{bean.impBeanServcieUrl};
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.cms.common.util.ServiceResponse;
+import com.cms.common.util.ServiceResponseHandle;
+import com.cms.common.util.GlobalUtil;
+import com.cms.common.util.StringUtil;
+import com.cms.common.util.page.Page;
+ 
+/**
+ * 描述：$!{bean.proxClassZhName}模块service接口实现类，实现service接口方法
+ *
+ * @author $!{annotation.authorName}
+ * @version $!{annotation.version} $!{annotation.date}
+ */
+@Service("$!{bean.lowerName}Service")
+public class $!{bean.uperName}ServiceImpl implements $!{bean.uperName}Service{
+    @Resource
+	private $!{bean.uperName}Mapper $!{bean.lowerName}Mapper;
+ 
+	/**
+	 * 新增$!{bean.proxClassZhName}方法
+	 * @param $!{bean.lowerName}:实体类
+	 */	
+	@Override
+	public ServiceResponse<$!{bean.uperName}> add($!{bean.uperName} $!{bean.lowerName}){
+	    if (StringUtil.isEmptyOrNull($!{bean.lowerName}.get$bean.ucolumnList.get("id")()))
+            $!{bean.lowerName}.set$bean.ucolumnList.get("id")(GlobalUtil.createGlobalId());
+		$!{bean.lowerName}Mapper.addSelective($!{bean.lowerName});
+		return ServiceResponseHandle.success($!{bean.lowerName});
+	}
+		
+	/**
+	 * 根据主键查找$!{bean.proxClassZhName}实体方法
+	 * @param key String 实体主键
+	 * @return $!{bean.uperName} 实体对象
+	 */
+	@Override
+	public $!{bean.uperName} getByPrimaryKey(String key){
+		return $!{bean.lowerName}Mapper.getByPrimaryKey(key);
+	}
+	
+	/**
+	 * 删除$!{bean.proxClassZhName}方法
+	 * @param key String 多个由“，”分割开的id字符串
+	 */
+	@Override
+	public ServiceResponse deleteByKey(String key){
+		$!{bean.lowerName}Mapper.deleteByKey(key);
+		return ServiceResponseHandle.success(null);
+	}
+	
+	/**
+	 * 根据条件查找$!{bean.proxClassZhName}列表方法
+	 * @param $!{bean.lowerName} $!{bean.uperName} 实体对象（查询条件）
+	 * @return List<$!{bean.uperName}> 实体对象的list
+	 */
+	@Override
+	public List<$!{bean.uperName}> listByCondition($!{bean.uperName} $!{bean.lowerName}){
+		return $!{bean.lowerName}Mapper.listByCondition($!{bean.lowerName});
+	}
+	
+	/**
+	 * 根据条件查找$!{bean.proxClassZhName}列表方法
+	 * @param $!{bean.lowerName} $!{bean.uperName} 实体对象（查询条件）
+	 * @param page：分页条件
+	 * @return 实体对象的list的Page对象封装
+	 */
+	public Page pageByCondition($!{bean.uperName} $!{bean.lowerName}, Page page) {
+		$!{bean.lowerName}.setPage(page == null?new Page():page);
+		page.setResult($!{bean.lowerName}Mapper.listByCondition($!{bean.lowerName}));
+		return page;
+	}
+	
+	/**
+	 * 修改$!{bean.proxClassZhName}方法
+	 * @param $!{bean.lowerName} $!{bean.uperName} 实体对象
+	 */	
+	@Override
+	public ServiceResponse update($!{bean.uperName} $!{bean.lowerName}){
+		$!{bean.lowerName}Mapper.updateSelective($!{bean.lowerName});
+		return ServiceResponseHandle.success(null);
+	}
+}

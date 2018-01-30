@@ -1,0 +1,135 @@
+(function( factory ) {
+  if( window.define ) {
+    define(['formToken','ajaxSub', 'bsDialog', 'bsDialogForm', 'areaCaseSelecter', 'table', 'jeDate','dropdownSelect'], factory)
+  }else {
+    window.App = factory( window.BootstrapDialog )
+  }
+}(function(formToken, ajax, bsDialog, BsDialogForm, AreaCaseSelecter, table, JeDate,dropdownSelect) {
+  /**
+   * $!{bean.proxClassZhName}
+   * @method $!{bean.uperName}
+   */
+  function $!{bean.uperName}() {
+	  var talbe = $("#J_$!{bean.lowerName}"),searchDom = $("#serach");
+      dropdownSelect(searchDom,function(input){
+        var key = input[0].name,value = input.data("value"),param = {};
+            param[key] = value;
+        talbe.bootstrapTable("refresh",{
+           query: !value ? null : param
+        })
+      });
+      $("#J_tableSearch").click(function(){
+         var input = searchDom.find(".table-search");
+         var key = input[0].name,value = input.val(),param = {};
+             if(!value || this.serachText == value){
+              return;
+             }
+             this.serachText == value
+             param[key] = value;
+         talbe.bootstrapTable("refresh",{
+           query: param
+        })
+      });
+      var listenerFormChange = function(input,form){
+    	  var _this = $(input);
+    	  if(_this.valid && !_this.valid()){
+    		  return;
+    	  };
+    	  if(input.originValue == input.value){
+    		  form.removeData(input.name);
+            }else{
+              form.data(input.name,input.value);
+            }
+      }
+    var transportPlan = $("#J_$!{bean.lowerName}").bootstrapTable({
+          url : window.Cms.rootDir + "/$!{bean.lowerName}/list",
+          pagination:true,
+          pageNumber:1,
+          searchBar: ".search-bar",
+          sortName:"status",
+          sortOrder:"asc",
+          sidePagination:"server",
+          columns:[
+             #foreach( $key in $bean.webListPageFields)
+			 {
+               title : '$!{bean.commentList.get($key)}',
+               field: '$!{bean.lcolumnList.get($key)}',
+               sortable :true
+             },
+			 #end
+             {
+              title : "操作",
+              events:{
+                 'click .editBtn': function (e, value, row, index) {
+                      BsDialogForm.loadTpl( '../$!{bean.lowerName}/viewUpdate?id='+row.id, '$!{bean.lowerName}', function( tpl, rules ) {
+                        new BsDialogForm(tpl, rules, {
+                          success:function(msg){
+                        	  $!{bean.lowerName}.bootstrapTable('refresh')
+                          },
+                          onFormInit: function( $form ) {
+					            //为表单更改的字段添加监听
+					            var tag = "input[name],select[name],textarea[name]";
+					            var f = $form;
+                                f.find(tag).each(
+                                    function(){
+                                        this.originValue = this.value;
+	                                }
+	                            ).change(
+	                                function(a){
+                                        listenerFormChange(this, f);
+	                                }
+                                );
+                          }
+                         }
+                        ).show('编辑', {id: row.id});
+                      })
+                  },
+                  'click .deleteBtn': function (e, value, row, index) {
+                       var btn = $(e);
+                         bsDialog.confirm( '提示', '是否删除？', function( dialog ) {
+                        	 var token = $("#token").val();
+	                    	 ajax({
+	                             url: '../$!{bean.lowerName}/delete',
+	                             data: {id: row.id,token:token},
+	                             success: function(msg) {
+	                               dialog.close()
+	                               btn.prop('disabled', true).text('删除成功')
+	                               $!{bean.lowerName}.bootstrapTable('refresh')
+	                             },
+	                           })
+	                           formToken.addFixedToken();
+	                        } );
+                         
+                  }
+                },
+                formatter:function(value,row,index){
+                  return  '<p><a href="javascript:;" class="btn btn-sm btn-outline-danger deleteBtn" '+(row.status==2?"style='display: none'":"")+'>删除</a></p>'+
+                  '<p><a href="javascript:;" class="btn btn-sm btn-outline-primary editBtn" '+(row.status==2?"style='display: none'":"")+'>编辑发布</a></p>'; 
+                }
+              }
+          ]
+        });
+    // 新增$!{bean.proxClassZhName}
+    $('.g-content').on('click', '.addNewBtn', function(evt) {
+      BsDialogForm.newForm( '新增$!{bean.proxClassZhName}', '../$!{bean.lowerName}/viewAdd', '$!{bean.lowerName}', {
+        success: function( msg ) {
+        	if( msg.success ){
+        		$!{bean.lowerName}.bootstrapTable('refresh')
+        	}
+        },
+        onFormInit: function( $form ) {
+          //$form.find('[data-case-selecter]').areaCaseSelecter()
+          //$form.find('[data-date-selecter]').jeDate()
+        },
+      })
+    })
+    
+  }
+
+  var ret = {
+    $!{bean.lowerName}: $!{bean.uperName},
+}
+
+  return ret
+
+}));

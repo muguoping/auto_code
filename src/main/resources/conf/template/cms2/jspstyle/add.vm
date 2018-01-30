@@ -1,0 +1,40 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@taglib prefix="cms" uri="http://tag.cmswl.com/jsp/cms" %>
+<form action="../$!{bean.lowerName}/add" id="$!{bean.lowerName}Form" autocomplete="off">
+	<cms:token />
+    #foreach( $key in $bean.webAddPageFields)
+    <div class="form-group row cols">
+		<div class="col-sm-5">
+			<label for="$!{bean.lcolumnList.get($key)}"
+				class="control-label offset-sm-label col-form-label">$!{bean.commentList.get($key)}<span style="color: red;">*</span></label>
+			<div class="offset-sm-input">
+				<input name="$!{bean.lcolumnList.get($key)}" id="$!{bean.lcolumnList.get($key)}" type="text"
+					class="form-control">
+				<div class="form-control-feedback"></div>
+			</div>
+		</div>
+	</div>
+	#end
+
+	<div class="form-group row btns text-xs-right">
+		<input type="hidden" name="status" />
+		<button class="btn btn-outline-primary" data-status="1">暂存</button>
+		<button class="btn btn-primary" data-status="2">发布</button>
+	</div>
+</form>
+<script type="text/javascript">
+	//表单非空验证
+  window.ModalFormRule['$!{bean.lowerName}'] = {
+    #foreach( $key in $bean.webAddPageFields)
+    '$!{bean.lcolumnList.get($key)}': {
+      required: true,
+    },
+    #end
+  }
+ 
+</script>
+
+
+</body>
+</html>

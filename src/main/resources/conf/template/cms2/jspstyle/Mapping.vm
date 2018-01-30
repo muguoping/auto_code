@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="$!{bean.ImpDaoUrl}">
+	<resultMap id="BaseResultMap" type="$!{bean.impBeanUrl}">
+		<id column="$bean.tbColumnList.get('id')" property="$bean.lcolumnList.get('id')" jdbcType="$bean.jdbcList.get('id')" />
+		#foreach ( $key in $bean.lcolumnList.keySet())
+			#if($key!="id"&&!$key!="CLOB")
+		<result column="$bean.tbColumnList.get($key)" property="$bean.lcolumnList.get($key)" jdbcType="$bean.jdbcList.get($key)" />
+			#end
+			#if($key=="CLOB")
+		<result column="$bean.tbColumnList.get($key)" property="$bean.lcolumnList.get($key)" jdbcType="$bean.jdbcList.get($key)" javaType ="java.lang.String"/>
+			#end
+		#end
+	</resultMap>
+	<sql id="Base_Column_List">
+		#foreach($key in $bean.tbColumnList.keySet())   
+			#if($velocityCount == 1)    
+	 	$bean.tbColumnList.get($key)
+			#else
+		,$bean.tbColumnList.get($key)
+			#end  
+		#end
+	</sql>
+	
+	<select id="getByPrimaryKey" resultMap="BaseResultMap" parameterType="$bean.typeList.get('id')">
+		select
+		<include refid="Base_Column_List" />
+		from $!{bean.tableName}
+		where $bean.tbColumnList.get("id") = #{$bean.lcolumnList.get("id"),jdbcType=$bean.jdbcList.get("id")}
+	</select>
+	
+	<select id="listByCondition" resultMap="BaseResultMap" parameterType="$!{bean.impBeanUrl}">
+		select
+		<include refid="Base_Column_List" />
+		from $!{bean.tableName}
+		where 1=1
+		#foreach($key in $bean.tbColumnList.keySet())   
+        <if test="$bean.lcolumnList.get($key) != null and '' != $bean.lcolumnList.get($key)">  
+			and $bean.tbColumnList.get($key) = #{$bean.lcolumnList.get($key),jdbcType=$bean.jdbcList.get($key)}
+		</if>
+		#end
+		<if test="page != null and page.orderColumn != null and '' != page.orderColumn">
+       		order by ${page.orderColumn} ${page.order}
+		</if>
+	</select>
+	
+	<delete id="deleteByKey" parameterType="java.lang.String">
+		delete from $!{bean.tableName}
+		where $bean.tbColumnList.get("id") = #{$bean.lcolumnList.get("id"),jdbcType=$bean.jdbcList.get("id")}
+	</delete>
+	
+	<insert id="add" parameterType="$!{bean.impBeanUrl}">
+		insert into $!{bean.tableName} (
+		<include refid="Base_Column_List" />
+		)values (
+			#foreach ( $key in $bean.lcolumnList.keySet())
+				#if($velocityCount == 1)   
+			#{$bean.lcolumnList.get($key),jdbcType=$bean.jdbcList.get($key)}
+				#else
+			,#{$bean.lcolumnList.get($key),jdbcType=$bean.jdbcList.get($key)}
+				#end
+			#end
+		)
+	</insert>
+	
+	<insert id="addSelective" parameterType="$!{bean.impBeanUrl}">
+		insert into $!{bean.tableName} (
+		    #foreach ( $key in $bean.lcolumnList.keySet())
+			    <if test="$bean.lcolumnList.get($key) != null and '' != $bean.lcolumnList.get($key)">  
+				    #if($velocityCount == 1)   
+						$bean.tbColumnList.get($key)
+					#else
+						,$bean.tbColumnList.get($key)
+					#end
+				</if>
+			#end
+		)values (
+			#foreach ( $key in $bean.lcolumnList.keySet())
+			    <if test="$bean.lcolumnList.get($key) != null and '' != $bean.lcolumnList.get($key)"> 
+					#if($velocityCount == 1)   
+						#{$bean.lcolumnList.get($key),jdbcType=$bean.jdbcList.get($key)}
+					#else 
+						,#{$bean.lcolumnList.get($key),jdbcType=$bean.jdbcList.get($key)}
+					#end
+				</if>				
+			#end
+		)
+	</insert>
+	
+	<update id="update" parameterType="$!{bean.impBeanUrl}">
+		update $!{bean.tableName}  set
+		ID= #{$bean.lcolumnList.get("id"),jdbcType=$bean.jdbcList.get("id")}
+		#foreach ( $key in $bean.lcolumnList.keySet())
+			#if($bean.tbColumnList.get("id") != $bean.tbColumnList.get($key))   
+			,$bean.tbColumnList.get($key) = #{$bean.lcolumnList.get($key),jdbcType=$bean.jdbcList.get($key)}
+			#end
+		#end
+		where $bean.tbColumnList.get("id") = #{$bean.lcolumnList.get("id"),jdbcType=$bean.jdbcList.get("id")}
+	</update>
+	
+	<update id="updateSelective" parameterType="$!{bean.impBeanUrl}">
+		update $!{bean.tableName}  
+		<set>
+		#foreach ( $key in $bean.lcolumnList.keySet())
+		#if("id" != $key)
+		<if test="$bean.lcolumnList.get($key) != null and '' != $bean.lcolumnList.get($key)">
+		$bean.tbColumnList.get($key) = #{$bean.lcolumnList.get($key),jdbcType=$bean.jdbcList.get($key)},
+		</if>
+		#end
+		#end
+		</set>
+		where $bean.tbColumnList.get("id") = #{$bean.lcolumnList.get("id"),jdbcType=$bean.jdbcList.get("id")}
+	</update>
+</mapper>

@@ -1,0 +1,111 @@
+##create bean 
+package $!{bean.beanUrl};
+
+import java.util.Date;
+import java.math.BigDecimal;
+import org.springframework.format.annotation.DateTimeFormat;
+import com.cms.common.model.BaseDomain;
+/**
+ * 描述：$!{bean.proxClassZhName}模块实体类，负责页面与后台数据传输功能
+ *
+ * @author $!{annotation.authorName}
+ * @version $!{annotation.version} $!{annotation.date}
+ */
+public class $!{bean.uperName} extends BaseDomain{
+	
+	
+	#foreach ( $key in $bean.lcolumnList.keySet())
+        /**
+         * $bean.commentList.get($key)
+         **/
+	    #if ($key == "id")
+	    private String $bean.lcolumnList.get($key);
+	    #else
+		#if($bean.jdbcList.get($key)=="TIMESTAMP"||$bean.jdbcList.get($key) == "DATE")   
+			@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") 
+			private Date $bean.lcolumnList.get($key);
+		#else
+		   #if($bean.jdbcList.get($key)=="INTEGER"||$bean.jdbcList.get($key) == "NUMBER")   
+			private BigDecimal $bean.lcolumnList.get($key);
+		   #else
+			private String $bean.lcolumnList.get($key);
+		   #end
+		#end
+        #end
+	#end
+
+	#foreach ( $key in $bean.ucolumnList.keySet())
+	    #if ($key == "id")
+	        /**
+			 * 获取 $bean.commentList.get($key)
+			 * @return String this.$bean.lcolumnList.get($key)
+			 */
+			public String get$bean.ucolumnList.get($key)(){
+				return this.$bean.lcolumnList.get($key);
+			}
+			
+			/**
+			 * 设置 $bean.commentList.get($key)
+			 * @param String $bean.lcolumnList.get($key) 
+			 */
+			public void set$bean.ucolumnList.get($key)(String $bean.lcolumnList.get($key)){
+				this.$bean.lcolumnList.get($key) = $bean.lcolumnList.get($key);
+			}
+	    #else
+		#if($bean.jdbcList.get($key) == "TIMESTAMP"||$bean.jdbcList.get($key) == "DATE")   
+			/**
+			 * 获取 $bean.commentList.get($key)
+			 * @return Date this.$bean.lcolumnList.get($key)
+			 */
+			public Date get$bean.ucolumnList.get($key)(){
+				return this.$bean.lcolumnList.get($key);
+			}
+			
+			/**
+			 * 设置 $bean.commentList.get($key)
+			 * @param Date $bean.lcolumnList.get($key) 
+			 */
+			public void set$bean.ucolumnList.get($key)(Date $bean.lcolumnList.get($key)){
+				this.$bean.lcolumnList.get($key) = $bean.lcolumnList.get($key);
+			}
+		#else
+	
+		  #if($bean.jdbcList.get($key)=="INTEGER"||$bean.jdbcList.get($key) == "NUMBER")   
+			/**
+			 * 获取 $bean.commentList.get($key)
+			 * @return BigDecimal this.$bean.lcolumnList.get($key)
+			 */
+			public BigDecimal get$bean.ucolumnList.get($key)(){
+				return this.$bean.lcolumnList.get($key);
+			}
+			
+			/**
+			 * 设置 $bean.commentList.get($key)
+			 * @param BigDecimal $bean.lcolumnList.get($key) 
+			 */
+			public void set$bean.ucolumnList.get($key)(BigDecimal $bean.lcolumnList.get($key)){
+				this.$bean.lcolumnList.get($key) = $bean.lcolumnList.get($key);
+			}
+		   #else
+			/**
+			 * 获取 $bean.commentList.get($key)
+			 * @return String this.$bean.lcolumnList.get($key)
+			 */
+			public String get$bean.ucolumnList.get($key)(){
+				return this.$bean.lcolumnList.get($key);
+			}
+			
+			/**
+			 * 设置 $bean.commentList.get($key)
+			 * @param String $bean.lcolumnList.get($key) 
+			 */
+			public void set$bean.ucolumnList.get($key)(String $bean.lcolumnList.get($key)){
+				this.$bean.lcolumnList.get($key) = $bean.lcolumnList.get($key);
+			}
+		   #end
+		#end	
+		
+			
+		#end
+	#end
+}

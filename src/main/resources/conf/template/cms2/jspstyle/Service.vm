@@ -1,0 +1,56 @@
+##create bean service,this is a interface
+package $!{bean.beanUrl};
+
+import java.util.List;
+import com.cms.common.util.ServiceResponse;
+import com.cms.common.util.page.Page;
+import $!{bean.impBeanUrl};
+
+/**
+ * 描述：$!{bean.proxClassZhName}模块service接口，提供controller操作所需方法
+ *
+ * @author $!{annotation.authorName}
+ * @version $!{annotation.version} $!{annotation.date}
+ */
+public interface $!{bean.uperName}Service  {
+
+	/**
+	 * 新增$!{bean.proxClassZhName}方法
+	 * @param $!{bean.lowerName} $!{bean.uperName}:实体类
+	 */
+	ServiceResponse<$!{bean.uperName}> add($!{bean.uperName} $!{bean.lowerName});
+		
+	/**
+	 * 删除$!{bean.proxClassZhName}方法
+	 * @param key:多个由“，”分割开的id字符串
+	 */
+	ServiceResponse deleteByKey(String key);
+	
+	/**
+	 * 根据主键查找$!{bean.proxClassZhName}实体方法
+	 * @param key String：实体主键
+	 * @return $!{bean.lowerName} $!{bean.uperName} 实体对象
+	 */
+	$!{bean.uperName} getByPrimaryKey(String key);
+	
+	/**
+	 * 根据条件查找$!{bean.proxClassZhName}列表方法
+	 * @param $!{bean.lowerName} $!{bean.uperName} 实体对象（查询条件）
+	 * @return: 实体对象的list
+	 */
+	List<$!{bean.uperName}> listByCondition($!{bean.uperName} $!{bean.lowerName});
+	
+	/**
+	 * 根据条件查找$!{bean.proxClassZhName}列表方法
+	 * @param $!{bean.lowerName} $!{bean.uperName} 实体对象（查询条件）
+	 * @return: 实体对象的list的Page对象封装
+	 */
+	Page pageByCondition($!{bean.uperName} $!{bean.lowerName}, Page page);
+	
+	/**
+	 * 修改$!{bean.proxClassZhName}方法
+	 * @param $!{bean.lowerName} $!{bean.uperName} 实体对象
+	 */	
+	ServiceResponse update($!{bean.uperName} $!{bean.lowerName});
+	
+}

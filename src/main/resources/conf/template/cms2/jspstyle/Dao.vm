@@ -1,0 +1,57 @@
+##创建dao接口
+package $!{bean.beanUrl};
+
+import java.util.List;
+import $!{bean.impBeanUrl};
+/**
+ * 描述：$!{bean.proxClassZhName}模块dao接口，提供数据库操作方法
+ *
+ * @author $!{annotation.authorName}
+ * @version $!{annotation.version} $!{annotation.date}
+ */
+public interface $!{bean.uperName}Mapper  {
+
+	/**
+	 * 新增$!{bean.proxClassZhName}方法
+	 * @param $!{bean.lowerName} $!{bean.uperName}:实体类
+	 */
+	void add($!{bean.uperName} $!{bean.lowerName});
+	
+	/**
+	 * 新增$!{bean.proxClassZhName}方法，过滤为空的属性
+	 * @param $!{bean.lowerName} $!{bean.uperName}:实体类
+	 */
+	void addSelective($!{bean.uperName} $!{bean.lowerName});
+	
+	/**
+	 * 删除$!{bean.proxClassZhName}方法
+	 * @param key String:多个由“，”分割开的id字符串
+	 */
+	void deleteByKey(String key);
+	
+	/**
+	 * 根据主键查找$!{bean.proxClassZhName}实体方法
+	 * @param key String：实体主键（查询条件）
+	 * @return $!{bean.uperName}: 实体
+	 */
+	public $!{bean.uperName} getByPrimaryKey(String key);
+	
+	/**
+	 * 根据条件查找$!{bean.proxClassZhName}列表方法
+	 * @param $!{bean.uperName} $!{bean.lowerName}：实体对象（查询条件）
+	 * @return List<$!{bean.uperName}>: 实体对象的list
+	 */
+	public List<$!{bean.uperName}>  listByCondition($!{bean.uperName} $!{bean.lowerName});
+	
+	/**
+	 * 修改$!{bean.proxClassZhName}方法
+	 * @param $!{bean.lowerName} $!{bean.uperName}：实体对象
+	 */	
+	public void update($!{bean.uperName} $!{bean.lowerName});
+	
+	/**
+	 * 修改$!{bean.proxClassZhName}方法，过滤为空的属性
+	 * @param $!{bean.lowerName} $!{bean.uperName}：实体对象
+	 */	
+	public void updateSelective($!{bean.uperName} $!{bean.lowerName});
+}
