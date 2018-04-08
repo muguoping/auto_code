@@ -41,7 +41,7 @@ public class CodeGenerate {
 //		final JTextField projectName = new JTextField("");
 //		panel.add(projectName);
 		panel.add(new JLabel("作者名称："));
-		final JTextField authorName = new JTextField("liangjianwei");
+		final JTextField authorName = new JTextField("muguoping");
 		panel.add(authorName);
 		Button generate = new Button("gen code");
 		ActionListener a1=new ActionListener(){   
